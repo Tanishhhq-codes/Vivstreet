@@ -52,6 +52,7 @@ body {
 }
 .loader-text {
     font-family: 'Syne', sans-serif;
+    color: #ff5101;
     font-size: 2rem;
     font-weight: 800;
     animation: blink 1s infinite;
@@ -66,18 +67,24 @@ body {
     align-items: center;
     position: relative;
     /* Optional: Add a subtle background image here */
-    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    background: radial-gradient(circle at center, #1f1f1f 0%, #000000 100%);
     padding: 0 20px;
 }
 
 nav {
     position: absolute;
     top: 40px;
-    width: 90%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 50px;
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
     letter-spacing: 2px;
+    color: #ff5101;
     opacity: 0.6;
 }
 
@@ -85,21 +92,28 @@ nav {
     text-align: center;
     z-index: 10;
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
+    padding: 0 20px;
 }
 
 /* --- 5. Typography --- */
 .main-title {
     font-family: 'Syne', sans-serif;
     font-size: clamp(3rem, 6vw, 8rem); /* Responsive font size with limits */
-    line-height: 0.9;
+    line-height: 0.5;
     text-transform: uppercase;
     margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+
+.reveal-text {
+    display: block;
 }
 
 .outline {
-    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.3);
     color: transparent;
+    font-size: 0.95em;
 }
 
 .sub-text {
@@ -137,7 +151,7 @@ input {
     text-transform: uppercase;
 }
 
-input::placeholder { color: #444; }
+input::placeholder { color: #ff5100; }
 
 button {
     background: transparent;
@@ -160,7 +174,7 @@ button:hover {
     width: 100%;
     background: var(--text-color);
     color: var(--bg-color);
-    padding: 10px 0;
+    padding: 15px 0;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -171,6 +185,7 @@ button:hover {
     font-size: 1.2rem;
     text-transform: uppercase;
     animation: scroll 20s linear infinite;
+    will-change: transform;
 }
 
 /* --- Animations --- */
@@ -195,6 +210,11 @@ button:hover {
 
 /* Large Desktop (1920px+) */
 @media (min-width: 1920px) {
+    nav {
+        padding: 0 60px;
+        max-width: 1600px;
+    }
+    
     .main-title {
         font-size: 7.5rem;
     }
@@ -218,6 +238,10 @@ button:hover {
 
 /* Desktop (1200px - 1919px) */
 @media (min-width: 1200px) and (max-width: 1919px) {
+    nav {
+        padding: 0 50px;
+    }
+    
     .main-title {
         font-size: 6rem;
     }
@@ -248,6 +272,10 @@ button:hover {
 
 /* Tablets in portrait (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
+    nav {
+        padding: 0 30px;
+    }
+    
     .main-title {
         font-size: 4.5rem;
     }
@@ -280,15 +308,24 @@ button:hover {
     
     nav {
         top: 20px;
-        width: 90%;
+        padding: 0 20px;
         font-size: 0.65rem;
         letter-spacing: 1px;
+    }
+    
+    .center-content {
+        max-width: 100%;
+        padding: 0 10px;
     }
     
     .main-title { 
         font-size: 3rem;
         margin-bottom: 1.5rem;
         line-height: 1;
+    }
+    
+    .outline {
+        -webkit-text-stroke: 1px rgba(255,255,255,0.3);
     }
     
     .sub-text {
@@ -316,6 +353,10 @@ button:hover {
     
     .marquee-content {
         font-size: 1rem;
+    }
+    
+    .marquee-container {
+        padding: 12px 0;
     }
     
     #successMessage {
