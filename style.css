@@ -1,0 +1,195 @@
+/* --- 1. Variables & Reset --- */
+:root {
+    --bg-color: #0e0e0e;
+    --text-color: #f0f0f0;
+    --accent: #FF3B30; /* A premium streetwear Red */
+    --easing: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- 2. Custom Cursor --- */
+.cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference; /* The magic premium effect */
+    transition: transform 0.1s;
+}
+
+.cursor-follower {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s var(--easing);
+}
+
+/* --- 3. Preloader --- */
+.preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: transform 0.8s var(--easing);
+}
+.loader-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    animation: blink 1s infinite;
+}
+
+/* --- 4. Main Layout --- */
+.hero-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* Optional: Add a subtle background image here */
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+}
+
+nav {
+    position: absolute;
+    top: 40px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    opacity: 0.6;
+}
+
+.center-content {
+    text-align: center;
+    z-index: 10;
+}
+
+/* --- 5. Typography --- */
+.main-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 6vw; /* Responsive font size */
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.outline {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    color: transparent;
+}
+
+.sub-text {
+    font-size: 1rem;
+    color: #888;
+    margin-bottom: 3rem;
+    letter-spacing: 1px;
+}
+
+/* --- 6. The Premium Form --- */
+.minimal-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    width: 300px;
+    margin: 0 auto;
+    transition: border-color 0.3s;
+}
+
+.minimal-form:focus-within {
+    border-color: var(--text-color);
+}
+
+input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    width: 100%;
+    outline: none;
+    text-transform: uppercase;
+}
+
+input::placeholder { color: #444; }
+
+button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 0 10px;
+    transition: transform 0.3s;
+}
+
+button:hover {
+    transform: translateX(5px);
+    color: var(--accent);
+}
+
+/* --- 7. Marquee (Scrolling Text) --- */
+.marquee-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: var(--text-color);
+    color: var(--bg-color);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee-content {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    animation: scroll 20s linear infinite;
+}
+
+/* --- Animations --- */
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes blink { 50% { opacity: 0.3; } }
+
+.hidden { display: none; }
+.hide-preloader { transform: translateY(-100%); }
+
+#successMessage {
+    margin-top: 20px;
+    color: var(--accent);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+/* Mobile Tweak */
+@media (max-width: 768px) {
+    .main-title { font-size: 3.5rem; }
+    .cursor, .cursor-follower { display: none; } /* Hide custom cursor on touch */
+    * { cursor: auto; }
+}
