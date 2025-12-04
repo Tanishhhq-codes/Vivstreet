@@ -1,45 +1,50 @@
-/* --- 1. Variables & Reset --- */
+/* =========================================
+   1. VARIABLES & RESET
+   ========================================= */
 :root {
-    --bg-color: #0e0e0e;
-    --text-color: #f0f0f0;
-    --accent: #FF3B30; /* A premium streetwear Red */
-    --easing: cubic-bezier(0.19, 1, 0.22, 1);
+    --bg-color: #0e0e0e;       /* Deep Black */
+    --text-color: #f0f0f0;     /* Off-white for better readability */
+    --accent: #FF3B30;         /* VIVSTREET Red - The Core Brand Color */
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --easing: cubic-bezier(0.19, 1, 0.22, 1); /* "Expo" easing for premium feel */
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
+/* Premium Selection Style: Highlighting text turns it Red */
+::selection {
+    background: var(--accent);
+    color: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Space Grotesk', sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    height: 100dvh;
+    overflow: hidden; /* Prevent scrolling on the main page */
     position: relative;
+    -webkit-font-smoothing: antialiased; /* Crisper text on Mac */
 }
 
-/* --- 2. Custom Cursor --- */
-.cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    mix-blend-mode: difference; /* The magic premium effect */
-    transition: transform 0.1s;
+/* FIX: Stop Chrome/Edge from turning inputs blue/white on auto-fill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: var(--accent);
+    transition: background-color 5000s ease-in-out 0s;
 }
 
-.cursor-follower {
-    position: fixed;
-    width: 40px; height: 40px;
-    border: 1px solid rgba(255,255,255, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.15s var(--easing);
-}
-
-/* --- 3. Preloader --- */
+/* =========================================
+   2. PRELOADER
+   ========================================= */
 .preloader {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -47,27 +52,35 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
     transition: transform 0.8s var(--easing);
 }
-.loader-text {
-    font-family: 'Syne', sans-serif;
-    color: #ff5101;
-    font-size: 2rem;
-    font-weight: 800;
-    animation: blink 1s infinite;
+
+.loader-logo {
+    width: 80px;
+    height: auto;
+    animation: pulse 2s infinite;
+    mix-blend-mode: screen; /* Removes black background */
 }
 
-/* --- 4. Main Layout --- */
+.hide-preloader {
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
+/* =========================================
+   3. HERO SECTION & NAV
+   ========================================= */
 .hero-section {
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
-    /* Optional: Add a subtle background image here */
-    background: radial-gradient(circle at center, #1f1f1f 0%, #000000 100%);
+    /* Subtle vignette to focus center */
+    background: radial-gradient(circle at center, #1f1f1f 0%, #000000 120%);
     padding: 0 20px;
 }
 
@@ -77,364 +90,493 @@ nav {
     left: 0;
     right: 0;
     width: 100%;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 50px;
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
+    font-weight: 500;
     letter-spacing: 2px;
-    color: #ff5101;
-    opacity: 0.6;
+    color: var(--accent); /* ACCENT COLOR USED HERE */
+    opacity: 0.8;
 }
 
-.center-content {
-    text-align: center;
-    z-index: 10;
-    width: 100%;
-    max-width: 800px;
-    padding: 0 20px;
+/* =========================================
+   4. TYPOGRAPHY & LOGO
+   ========================================= */
+/* --- Typography Colors --- */
+
+/* The main brand name (White) */
+.white-mode {
+    color: white;
+    font-weight: 800; /* Extra bold */
 }
 
-/* --- 5. Typography --- */
+/* The secondary text (Solid Red) */
+.accent-mode {
+    color: var(--accent);
+}
+
+/* The Outline text (Hollow Red) */
+.outline-accent {
+    -webkit-text-stroke: 1.5px var(--accent); /* Red Border */
+    color: transparent;                       /* See-through center */
+    font-style: italic;                       /* Optional: Adds speed/movement */
+}
+
+/* Update sub-text to be Red but slightly transparent for hierarchy */
+.sub-text {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    letter-spacing: 1px;
+    opacity: 0.8; /* Subtle transparency so it doesn't fight the title */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 2s;
+}
+
+/* Adjust Main Title spacing to handle 3 lines */
 .main-title {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 6vw, 8rem); /* Responsive font size with limits */
-    line-height: 0.5;
+    /* Reduce size slightly so 3 lines fit on screen */
+    font-size: clamp(2.5rem, 6vw, 7rem); 
+    line-height: 0.85;
     text-transform: uppercase;
     margin-bottom: 2rem;
     letter-spacing: -0.02em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+   .center-content {
+    text-align: center;
+    z-index: 10;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    mix-blend-mode: screen; /* Removes black background */
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards;
+    animation-delay: 1.2s;
+}
+
+.main-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 8.5rem); /* Responsive giant text */
+    line-height: 0.85;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    letter-spacing: -0.03em;
+    display: flex;
+    flex-direction: column; /* Stacks the two spans */
+    justify-content: center;
+    align-items: center;
 }
 
 .reveal-text {
     display: block;
+    opacity: 0;
+    animation: slideUp 1s var(--easing) forwards;
+    animation-delay: 1.5s;
 }
 
+/* The Outline Text Effect */
 .outline {
-    -webkit-text-stroke: 1.5px rgba(255,255,255,0.3);
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.2);
     color: transparent;
-    font-size: 0.95em;
+    animation-delay: 1.7s; /* Appears slightly after the first line */
 }
 
 .sub-text {
     font-size: 1rem;
     color: #888;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     letter-spacing: 1px;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 2s;
 }
 
-/* --- 6. The Premium Form --- */
-.minimal-form {
-    position: relative;
+/* =========================================
+   5. BUTTONS (CTA)
+   ========================================= */
+.cta-button {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 16px 45px;
+    background: white;
+    color: black;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s var(--easing);
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 2.2s;
+}
+
+.cta-button:hover {
+    background: var(--accent); /* ACCENT HOVER */
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 59, 48, 0.3); /* Red Glow */
+}
+
+/* =========================================
+   6. MODAL (GLASSMORPHISM)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
     display: flex;
+    justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-    transition: border-color 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s var(--easing);
 }
 
-.minimal-form:focus-within {
-    border-color: var(--text-color);
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.glass-card {
+    background: rgba(25, 25, 25, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    transform: translateY(50px);
+    transition: transform 0.4s var(--easing);
+    box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
+    
+    /* Prevent cutoff on small screens */
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.modal-overlay.active .glass-card {
+    transform: translateY(0);
+}
+
+.close-icon {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-icon:hover {
+    color: var(--accent); /* ACCENT HOVER */
+}
+
+.modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.modal-sub {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 35px;
+}
+
+/* =========================================
+   7. FORM STYLING
+   ========================================= */
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
 }
 
 input {
     background: transparent;
     border: none;
+    border-bottom: 1px solid #333;
     color: white;
     font-size: 1rem;
     font-family: 'Space Grotesk', sans-serif;
     width: 100%;
+    padding: 10px 0;
     outline: none;
+    text-transform: uppercase;
+    transition: border-color 0.3s;
+    border-radius: 0; /* Remove iOS rounded corners */
+}
+
+input:focus {
+    border-bottom: 1px solid var(--accent); /* ACCENT FOCUS STATE */
+}
+
+input::placeholder { 
+    color: #555; 
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+input:focus::placeholder {
+    color: var(--accent); /* ACCENT PLACEHOLDER ON FOCUS */
+    opacity: 0.5;
+}
+
+/* The "OR" Divider */
+.form-divider {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--accent); /* ACCENT COLOR */
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: -10px 0;
+    position: relative;
+    opacity: 0.8;
+}
+
+.form-divider::before,
+.form-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 35%;
+    height: 1px;
+    background: #222;
+}
+.form-divider::before { left: 5%; }
+.form-divider::after { right: 5%; }
+
+/* Submit Button */
+.full-width-btn {
+    width: 100%;
+    background: white;
+    color: black;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 18px 0;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
     text-transform: uppercase;
 }
 
-input::placeholder { color: #ff5100; }
-
-button {
-    background: transparent;
-    border: none;
+.full-width-btn:hover {
+    background: var(--accent); /* ACCENT HOVER */
     color: white;
-    font-size: 1.5rem;
-    padding: 0 10px;
-    transition: transform 0.3s;
 }
 
-button:hover {
-    transform: translateX(5px);
-    color: var(--accent);
+.full-width-btn:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
 }
 
-/* --- 7. Marquee (Scrolling Text) --- */
+#successMessage {
+    margin-top: 25px;
+    color: var(--accent); /* ACCENT SUCCESS MESSAGE */
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+/* =========================================
+   8. MARQUEE
+   ========================================= */
 .marquee-container {
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: var(--text-color);
-    color: var(--bg-color);
-    padding: 15px 0;
+    background: white;
+    color: black;
+    padding: 12px 0;
     overflow: hidden;
     white-space: nowrap;
+    z-index: 5;
 }
 
 .marquee-content {
     display: inline-block;
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-weight: 800;
+    font-size: 1rem;
     text-transform: uppercase;
-    animation: scroll 20s linear infinite;
+    animation: scroll 25s linear infinite;
     will-change: transform;
 }
 
-/* --- Animations --- */
+/* =========================================
+   9. ANIMATIONS
+   ========================================= */
 @keyframes scroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-@keyframes blink { 50% { opacity: 0.3; } }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.95); }
+}
 
 .hidden { display: none; }
-.hide-preloader { transform: translateY(-100%); }
 
-#successMessage {
-    margin-top: 20px;
-    color: var(--accent);
-    font-size: 0.8rem;
-    letter-spacing: 2px;
+/* =========================================
+   10. RESPONSIVE MEDIA QUERIES
+   ========================================= */
+
+/* Large Screens (4K / Ultrawide) */
+@media (min-width: 2000px) {
+    .main-title { font-size: 10rem; }
+    .hero-logo { width: 180px; }
+    .cta-button { padding: 20px 60px; font-size: 1.5rem; }
+    nav { max-width: 2200px; font-size: 1rem; }
 }
 
-/* --- Mobile Optimization --- */
-
-/* Large Desktop (1920px+) */
-@media (min-width: 1920px) {
-    nav {
-        padding: 0 60px;
-        max-width: 1600px;
-    }
-    
-    .main-title {
-        font-size: 7.5rem;
-    }
-    
-    .sub-text {
-        font-size: 1.2rem;
-    }
-    
-    .minimal-form {
-        max-width: 400px;
-    }
-    
-    input {
-        font-size: 1.1rem;
-    }
-    
-    .marquee-content {
-        font-size: 1.4rem;
-    }
+/* Tablet / Laptop */
+@media (max-width: 1024px) {
+    .main-title { font-size: 5rem; }
+    nav { padding: 0 30px; }
 }
 
-/* Desktop (1200px - 1919px) */
-@media (min-width: 1200px) and (max-width: 1919px) {
-    nav {
-        padding: 0 50px;
-    }
-    
-    .main-title {
-        font-size: 6rem;
-    }
-    
-    .sub-text {
-        font-size: 1.1rem;
-    }
-    
-    .minimal-form {
-        max-width: 350px;
-    }
-}
-
-/* Laptop (1024px - 1199px) */
-@media (min-width: 1025px) and (max-width: 1199px) {
-    .main-title {
-        font-size: 5rem;
-    }
-    
-    .sub-text {
-        font-size: 1rem;
-    }
-    
-    .minimal-form {
-        max-width: 320px;
-    }
-}
-
-/* Tablets in portrait (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    nav {
-        padding: 0 30px;
-    }
-    
-    .main-title {
-        font-size: 4.5rem;
-    }
-    
-    .sub-text {
-        font-size: 0.95rem;
-    }
-    
-    .minimal-form {
-        max-width: 300px;
-    }
-    
-    nav {
-        font-size: 0.75rem;
-    }
-}
-
-/* Mobile phones (up to 768px) */
+/* Mobile */
 @media (max-width: 768px) {
-    .cursor, .cursor-follower { display: none; } /* Hide custom cursor on touch */
-    * { cursor: auto !important; }
+    body { overflow-x: hidden; } /* Fix horizontal scroll bugs */
     
-    body {
-        overflow-x: hidden;
-    }
+    .hero-section { padding: 0 15px; }
     
-    .hero-section {
-        padding: 0 15px;
-    }
+    nav { top: 20px; padding: 0 20px; font-size: 0.65rem; }
     
-    nav {
-        top: 20px;
-        padding: 0 20px;
-        font-size: 0.65rem;
-        letter-spacing: 1px;
-    }
-    
-    .center-content {
-        max-width: 100%;
-        padding: 0 10px;
-    }
+    .hero-logo { width: 90px; margin-bottom: 1rem; }
     
     .main-title { 
-        font-size: 3rem;
+        font-size: 2.8rem; 
+        line-height: 0.9;
         margin-bottom: 1.5rem;
-        line-height: 1;
     }
     
-    .outline {
-        -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-    }
+    .outline { -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
     
-    .sub-text {
-        font-size: 0.85rem;
-        margin-bottom: 2rem;
-        padding: 0 10px;
-    }
+    .sub-text { font-size: 0.9rem; margin-bottom: 2rem; }
     
-    .minimal-form {
-        width: 90%;
+    .cta-button {
+        width: 100%;
         max-width: 280px;
+        padding: 15px 0;
     }
+
+    /* Modal Mobile Fixes */
+    .glass-card { padding: 30px 20px; width: 95%; }
+    .modal-title { font-size: 1.8rem; }
     
-    input {
-        font-size: 0.85rem;
-    }
-    
-    input::placeholder {
-        font-size: 0.85rem;
-    }
-    
-    button {
-        font-size: 1.3rem;
-    }
-    
-    .marquee-content {
-        font-size: 1rem;
-    }
-    
-    .marquee-container {
-        padding: 12px 0;
-    }
-    
-    #successMessage {
-        font-size: 0.7rem;
-    }
+    .marquee-content { font-size: 0.9rem; animation-duration: 20s; }
 }
 
-/* Extra small phones (up to 375px) */
+/* Extra Small Phones */
 @media (max-width: 375px) {
-    nav {
-        font-size: 0.6rem;
-        top: 15px;
-    }
-    
-    .main-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
-    
-    .sub-text {
-        font-size: 0.8rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .minimal-form {
-        width: 95%;
-    }
-    
-    input, input::placeholder {
-        font-size: 0.8rem;
-    }
-    
-    .marquee-content {
-        font-size: 0.9rem;
-    }
-    
-    .loader-text {
-        font-size: 1.5rem;
-    }
+    .main-title { font-size: 2.5rem; }
+    .cta-button { font-size: 0.9rem; }
 }
 
-/* Landscape mode for phones (up to 896px) */
-@media (max-width: 896px) and (orientation: landscape) {
-    .hero-section {
-        padding: 0 20px;
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    nav { display: none; } /* Hide nav to save space */
+    .hero-logo { width: 60px; margin-bottom: 0.5rem; }
+    .main-title { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .sub-text { display: none; } /* Hide subtext to save space */
+    .marquee-container { padding: 5px 0; }
+}
+/* --- CRITICAL MOBILE FIXES --- */
+
+/* When screen is short (like when keyboard is open) */
+@media (max-height: 600px) {
+    .glass-card {
+        padding: 15px 20px;
+        transform: translateY(-20px) !important; /* Force it up */
+        max-width: 320px;
     }
     
-    nav {
-        top: 15px;
-        font-size: 0.7rem;
-    }
+    .modal-title { font-size: 1.5rem; margin-bottom: 2px; }
+    .modal-sub { margin-bottom: 15px; font-size: 0.8rem; }
     
-    .main-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
+    /* Hide the close button to prevent accidental clicks when typing */
+    .close-icon { top: 10px; right: 10px; font-size: 1.5rem; }
     
-    .sub-text {
-        font-size: 0.85rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .marquee-container {
-        padding: 8px 0;
-    }
-    
-    .minimal-form {
-        max-width: 260px;
-    }
+    .hero-logo { display: none; } /* Hide main logo to save space */
+}
+/* --- Social Corner (Bottom Right) --- */
+.social-corner {
+    position: fixed;
+    bottom: 60px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    color: white; /* Default Color */
+    z-index: 50;  /* Sits above the Marquee but below Modal */
+    transition: all 0.3s var(--easing);
+    opacity: 0.8;
 }
 
-/* Tablets in landscape (1024px and orientation) */
-@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
-    .main-title {
-        font-size: 4.5rem;
-    }
-    
-    nav {
-        top: 30px;
+.social-corner svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); /* Shadow for contrast */
+}
+
+.social-corner:hover {
+    color: var(--accent); /* Glows Red on Hover */
+    transform: scale(1.1) rotate(5deg); /* Slight pop effect */
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(255, 59, 48, 0.6)); /* Red Glow */
+}
+
+/* Mobile Adjustment: Move it up slightly so it doesn't hit the screen edge */
+@media (max-width: 768px) {
+    .social-corner {
+        bottom: 55px;
+        right: 20px;
+        width: 35px;
+        height: 35px;
     }
 }
